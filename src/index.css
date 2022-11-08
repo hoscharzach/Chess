@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 60px;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    color: white;
+    background: #121212;
+  }
+}
+
+#test-wrap {
+  overflow-x: hidden;
+  white-space: nowrap;
+}
+
+#popup-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+div[data-play=""]:hover {
+  cursor: pointer;
+}
+
+div[data-selected="1"],
+div[data-selected="1"]:first-child {
+  transform: scale(120%);
+}
+
+div[data-selected="0"],
+div[data-selected="0"]:first-child {
+  transform: none;
+}
+
+div[data-play="x"]::before,
+div[data-play="x"]::after {
+  position: absolute;
+  content: '';
+  width: 15px;
+  height: 100px;
+  background-color: white;
+}
+
+div[data-play="x"]::before {
+  transform: rotate(45deg);
+}
+
+div[data-play="x"]::after {
+  transform: rotate(-45deg);
+}
+
+div[data-play="o"]::before {
+  position: absolute;
+  top: 11px;
+  left: 12px;
+  right: 0;
+  bottom: 0;
+  content: "";
+  width: 100px;
+  height: 100px;
+  background-color: white;
+  border-radius: 50%;
+}
+
+div[data-play="o"]::after {
+  position: absolute;
+  top: 30px;
+  left: 31px;
+  right: 0;
+  bottom: 0;
+  content: "";
+  width: 63px;
+  height: 63px;
+  background-color: #121212;
+  border-radius: 50%;
+}
+
+#gameboard:first-child,
+#gameboard:nth-child(2),
+#gameboard:nth-child(3) {
+  border-top: none;
+}
