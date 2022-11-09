@@ -19,6 +19,14 @@ export function getValidMoves(board, piece, x) {
         if (board[x - 16] === "0") moves.push(x - 16)
         if (board[x - 7]?.slice[0] === "b") moves.push(x - 7)
         if (board[x - 9]?.slice[0] === "b") moves.push(x - 8)
+    } else if (piece === "wp") {
+        if (board[x - 8] === "0") moves.push(x - 8)
+        if (board[x - 7]?.slice[0] === "b") moves.push(x - 7)
+        if (board[x - 9]?.slice[0] === "b") moves.push(x - 8)
+    } else if (piece === "wk") {
+        if (board[x - 9] === "0" | board[x - 9]?.slice[0] === "b") moves.push(x - 9)
+        if (board[x - 15] === "0" | board[x - 15]?.slice[0] === "b") moves.push(x - 15)
+        if (board[x - 17] === "0" | board[x - 17]?.slice[0] === "b") moves.push(x - 17)
     }
 
     return moves.map(mv => mv.toString())

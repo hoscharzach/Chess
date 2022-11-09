@@ -12,6 +12,7 @@
 // import wp from '../../assets/wp.svg'
 import blank from '../../assets/blank.svg'
 import { useDispatch, useSelector } from 'react-redux'
+import { movePiece } from './chessSlice'
 
 // map images to object for dynamic access based on data-piece attribute
 // const imageMap = { bk, bK, br, bb, bq, bp, wb, wK, wk, wr, wq, wp, wpy: wp, bpy: bp, "0": blank }
@@ -25,6 +26,19 @@ export default function ChessCell(props) {
     // let image = imageMap[piece]
 
     function handleClick(e) {
+
+        // if something is selected already, this on click should be a move
+        // only do the move if the move is valid
+        if (selected && e.target.dataset.move === "1") {
+            //move piece
+            dispatch(movePiece({
+                start: selected.dataset.num,
+                end: e.target.dataset.num
+            }))
+            setSelected(null)
+            document.querySelector(`[data-selected="1"]`).dataset.selected = "0"
+            return
+        }
         const clickSelected = document.querySelector(`[data-selected="1"]`)
         if (e.target.dataset.piece === "0") return
 

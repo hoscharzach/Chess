@@ -26,7 +26,12 @@ export const chessSlice = createSlice({
             state.board = initialState.board
         },
         movePiece: (state, action) => {
-            state.board[Number(action[1])] = state.board[0]
+            const s = Number(action.payload.start)
+            const e = Number(action.payload.end)
+
+            const piece = state.board[s]
+            state.board[e] = piece
+            state.board[s] = "0"
         }
     }
 })

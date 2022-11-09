@@ -26,10 +26,10 @@ export default function Chess() {
         if (selected) {
             const mvs = getValidMoves(selectBoard, selected.dataset.piece, selected.dataset.num)
             mvs.forEach(mv => {
-                document.querySelector(`[data-num='${mv}']`).dataset.move = "1"
+                const el = document.querySelector(`[data-num='${mv}']`)
+                el.dataset.move = "1"
             })
         }
-
 
     }, [selected])
 
