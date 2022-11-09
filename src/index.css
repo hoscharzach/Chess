@@ -51,15 +51,6 @@ div[data-play=""]:hover {
   cursor: pointer;
 }
 
-div[data-selected="1"],
-div[data-selected="1"]:first-child {
-  transform: scale(120%);
-}
-
-div[data-selected="0"],
-div[data-selected="0"]:first-child {
-  transform: none;
-}
 
 div[data-play="x"]::before,
 div[data-play="x"]::after {
@@ -78,6 +69,14 @@ div[data-play="x"]::after {
   transform: rotate(-45deg);
 }
 
+div[data-move="1"]::after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  background-color: lightgray;
+  border-radius: 50%;
+}
+
 div[data-play="o"]::before {
   position: absolute;
   top: 11px;
@@ -89,6 +88,99 @@ div[data-play="o"]::before {
   height: 100px;
   background-color: white;
   border-radius: 50%;
+}
+
+div[data-selected="1"] {
+  transform: scale(1.05);
+  background-color: rgba(255, 165, 1, 1);
+}
+
+div[data-piece="bk"] {
+  background-image: url("./assets/bk.svg");
+  background-position: center center;
+  background-size: cover;
+}
+
+div[data-piece="bq"] {
+  background-image: url("./assets/bq.svg");
+  background-position: center center;
+  background-size: cover;
+}
+
+div[data-piece="br"] {
+  background-image: url("./assets/br.svg");
+  background-position: center center;
+  background-size: cover;
+}
+
+div[data-piece="bK"] {
+  background-image: url("./assets/bK.svg");
+  background-position: center center;
+  background-size: cover;
+}
+
+div[data-piece="bk"] {
+  background-image: url("./assets/bk.svg");
+  background-position: center center;
+  background-size: cover;
+}
+
+div[data-piece="bb"] {
+  background-image: url("./assets/bb.svg");
+  background-position: center center;
+  background-size: cover;
+}
+
+div[data-piece="bp"],
+div[data-piece="bpy"] {
+  background-image: url("./assets/bp.svg");
+  background-position: center center;
+  background-size: cover;
+}
+
+div[data-piece="wp"],
+div[data-piece="wpy"] {
+  background-image: url("./assets/wp.svg");
+  background-position: center center;
+  background-size: cover;
+}
+
+div[data-piece="wb"] {
+  background-image: url("./assets/wb.svg");
+  background-position: center center;
+  background-size: cover;
+}
+
+div[data-piece="wK"] {
+  background-image: url("./assets/wK.svg");
+  background-position: center center;
+  background-size: cover;
+}
+
+div[data-piece="wk"] {
+  background-image: url("./assets/wk.svg");
+  background-position: center center;
+  background-size: cover;
+}
+
+div[data-piece="wq"] {
+  background-image: url("./assets/wq.svg");
+  background-position: center center;
+  background-size: cover;
+}
+
+div[data-piece="wr"] {
+  background-image: url("./assets/wr.svg");
+  background-position: center center;
+  background-size: cover;
+}
+
+div[data-move="valid"]::after {
+  content: "";
+  width: 15px;
+  height: 15px;
+  background-color: crimson;
+  opacity: .7;
 }
 
 div[data-play="o"]::after {

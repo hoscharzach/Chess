@@ -1,16 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { defaultArray } from "../../ChessHelperFuncs";
 
 const initialState = {
     board: [
         "br", "bk", "bb", "bq", "bK", "bb", "bk", "br",
-        "bpy", "bpy", "bpy", "bpy", "bpy", "bpy", "bpy", "bp",
+        "bpy", "bpy", "bpy", "bpy", "bpy", "bpy", "bpy", "bpy",
         "0", "0", "0", "0", "0", "0", "0", "0",
         "0", "0", "0", "0", "0", "0", "0", "0",
         "0", "0", "0", "0", "0", "0", "0", "0",
         "0", "0", "0", "0", "0", "0", "0", "0",
         "wpy", "wpy", "wpy", "wpy", "wpy", "wpy", "wpy", "wpy",
         "wr", "wk", "wb", "wq", "wK", "wb", "wk", "wr"
-    ]
+    ],
+    offColor: defaultArray()
 }
 export const chessSlice = createSlice({
     name: 'chess',
@@ -22,11 +24,14 @@ export const chessSlice = createSlice({
         },
         reset: state => {
             state.board = initialState.board
+        },
+        movePiece: (state, action) => {
+            state.board[Number(action[1])] = state.board[0]
         }
     }
 })
 
 
-export const { movePawn, reset } = chessSlice.actions
+export const { movePawn, reset, movePiece } = chessSlice.actions
 
 export default chessSlice.reducer
