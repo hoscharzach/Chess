@@ -19,9 +19,10 @@ import { movePiece } from './chessSlice'
 
 export default function ChessCell(props) {
 
+    console.log(props.offColor)
     const { selected, setSelected } = props
     const dispatch = useDispatch()
-    const piece = useSelector(state => state.chess.board[props.num])
+    const piece = useSelector(state => state.chess.board[props.cell[0]][props.cell[1]])
 
     // let image = imageMap[piece]
 

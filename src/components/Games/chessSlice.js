@@ -3,14 +3,14 @@ import { defaultArray } from "../../ChessHelperFuncs";
 
 const initialState = {
     board: [
-        "br", "bk", "bb", "bq", "bK", "bb", "bk", "br",
-        "bpy", "bpy", "bpy", "bpy", "bpy", "bpy", "bpy", "bpy",
-        "0", "0", "0", "0", "0", "0", "0", "0",
-        "0", "0", "0", "0", "0", "0", "0", "0",
-        "0", "0", "0", "0", "0", "0", "0", "0",
-        "0", "0", "0", "0", "0", "0", "0", "0",
-        "wpy", "wpy", "wpy", "wpy", "wpy", "wpy", "wpy", "wpy",
-        "wr", "wk", "wb", "wq", "wK", "wb", "wk", "wr"
+        ["br", "bk", "bb", "bq", "bK", "bb", "bk", "br"],
+        ["bpy", "bpy", "bpy", "bpy", "bpy", "bpy", "bpy", "bpy"],
+        ["0", "0", "0", "0", "0", "0", "0", "0"],
+        ["0", "0", "0", "0", "0", "0", "0", "0"],
+        ["0", "0", "0", "0", "0", "0", "0", "0"],
+        ["0", "0", "0", "0", "0", "0", "0", "0"],
+        ["wpy", "wpy", "wpy", "wpy", "wpy", "wpy", "wpy", "wpy"],
+        ["wr", "wk", "wb", "wq", "wK", "wb", "wk", "wr"]
     ],
     offColor: defaultArray()
 }
@@ -30,8 +30,14 @@ export const chessSlice = createSlice({
             const e = Number(action.payload.end)
 
             const piece = state.board[s]
-            state.board[e] = piece
-            state.board[s] = "0"
+            // if it's pawn, remove the y, meaning it's made its first move
+            if (piece === "wpy" || piece === "bpy") {
+                state.board[e] = piece.slice(0, 2)
+                state.board[s] = "0"
+            } else {
+                state.board[e] = piece
+                state.board[s] = "0"
+            }
         }
     }
 })
