@@ -60,31 +60,84 @@ function getKingMoves(board, piece, x, y) {
     return mvs.map(coord => `${coord[0]}-${coord[1]}`)
 }
 
+function isCheck(board, piece, x, y) {
+    let mvs = []
+    // if king can move for ward with valid pawn move attack
+    // that means king can die to pawn
+    mvs.concat(getPawnMoves(board, piece, x, y))
+    // same applies for all other types
+
+    // check for all types of moves originating from the king instead
+    console.log(mvs)
+    // return mvs.map(mv => `The ${piece[0] === "b" ? 'black' : 'white'} is in check from mv`)
+    // array of moves is more than 0, king is in check?
+}
+
 
 function getPawnMoves(board, piece, x, y) {
     let mvs = []
     const firstMove = piece[piece.length - 1] === "y"
     const color = piece[0]
     if (color === "b") {
-        if (board[x + 1]?.[y] && board[x + 1]?.[y] === "0") mvs.push([x + 1, y])
-        if (firstMove && board[x + 2]?.[y] && board[x + 1]?.[y] === "0" && board[x + 2]?.[y] === "0") mvs.push([x + 2, y])
-        if (board[x + 1]?.[y - 1] && board[x + 1]?.[y - 1][0] === "w") mvs.push([x + 1, y - 1])
-        if (board[x + 1]?.[y + 1] && board[x + 1]?.[y + 1][0] === "w") mvs.push([x + 1, y + 1])
-    } else if (color === "w") {
-        if (board[x - 1]?.[y] && board[x - 1]?.[y] === "0") {
-            // console.log("adding up 1")
+        if (board[x + 1] &&
+            board[x + 1][y] &&
+            board[x + 1][y] === "0") {
+            // down one - check for empty space
+            mvs.push([x + 1, y])
+        }
+
+        if (firstMove &&
+            board[x + 2] &&
+            board[x + 2][y] &&
+            board[x + 2][y] === "0" &&
+            board[x + 1][y] === "0") {
+            // down two - check if first move and down one and down two
+            mvs.push([x + 2, y])
+        }
+
+        if (board[x + 1] &&
+            board[x + 1][y - 1] &&
+            board[x + 1][y - 1][0] === "w") {
+            // down one, left one - check if enemy piece
+            mvs.push([x + 1, y - 1])
+        }
+
+        if (board[x + 1] &&
+            board[x + 1][y + 1] &&
+            board[x + 1][y + 1][0] === "w") {
+            // down one, right one - check if enemy piece
+            mvs.push([x + 1, y + 1])
+        }
+
+    } else {
+
+        if (board[x - 1] &&
+            board[x - 1][y] &&
+            board[x - 1][y] === "0") {
+            // up one - check for empty space
             mvs.push([x - 1, y])
         }
-        if (firstMove && board[x - 2]?.[y] && board[x - 2]?.[y] === "0" && board[x - 1]?.[y] === "0") {
-            // console.log('adding up 2')
+
+        if (firstMove &&
+            board[x - 2] &&
+            board[x - 2][y] &&
+            board[x - 2][y] === "0" &&
+            board[x - 1][y] === "0") {
+            // up two - check both for empty space
             mvs.push([x - 2, y])
         }
-        if (board[x - 1] && board[x - 1][y - 1] && board[x - 1][y - 1][0] === "b") {
-            // console.log('adding up 1 left 1')
+
+        if (board[x - 1] &&
+            board[x - 1][y - 1] &&
+            board[x - 1][y - 1][0] === "b") {
+            // up one, left one - check for enemy piece
             mvs.push([x - 1, y - 1])
         }
-        if (board[x - 1] && board[x - 1][y + 1] && board[x - 1][y + 1][0] === "b") {
-            // console.log('adding up 1 right 1')
+
+        if (board[x - 1] &&
+            board[x - 1][y + 1] &&
+            board[x - 1][y + 1][0] === "b") {
+            // up one, right one - check for enemy piece
             mvs.push([x - 1, y + 1])
         }
     }
