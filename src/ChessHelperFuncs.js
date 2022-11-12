@@ -197,7 +197,7 @@ function getDirectionalMoves(board, piece, x, y, type) {
             [1, 0],
             [-1, 0],
             [0, 1],
-            [1, 0]
+            [0, -1]
         ]
     }
 
