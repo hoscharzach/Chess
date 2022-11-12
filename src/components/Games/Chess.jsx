@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 // import ChessGame from './ChessClass'
 import ChessCell from './ChessCell'
 import { useDispatch, useSelector } from "react-redux"
@@ -12,31 +12,41 @@ export default function Chess() {
     // console.log(selectOffColor, "SELECT OFF COLOR")
 
     const dispatch = useDispatch()
-    // intiialize empty board
-    const [currentGame, setCurrentGame] = useState('')
-    const [displayBoard, setDisplayBoard] = useState([])
     const [selected, setSelected] = useState(null)
-    const [moves, setMoves] = useState([])
 
 
+    // whenever selected changes
     useEffect(() => {
-        //  remove all active move highlights
+        //  remove all active move highlights every time selected is changed
         const mvs = document.querySelectorAll(`[data-move="1"]`)
         mvs.forEach(mv => mv.dataset.move = "0")
 
         // replace them with whatever is selected
         if (selected) {
-            const mvs = getValidMoves(selectBoard, selected.dataset.piece, selected.dataset.num)
+            const x = Number(selected[0])
+            const y = Number(selected[selected.length - 1])
+            const mvs = getValidMoves(
+                selectBoard,
+                selectBoard[x][y],
+                x,
+                y
+            )
             console.log(mvs)
             mvs.forEach(mv => {
-                const el = document.querySelector(`[data-num='${mv}']`)
+                const el = document.querySelector(`[data-num='${mv[0]}-${mv[mv.length - 1]}']`)
                 el.dataset.move = "1"
             })
         }
-
+        // console.log(selected.dataset)
     }, [selected])
 
-    // console.log(selectBoard, "SELECT BOARD")
+    function handleClick(e) {
+        setSelected(e.target)
+    }
+
+    // useEffect(() => {
+    //     console.log("i'm rerendering")
+    // })
     return (
 
         // board container
@@ -44,16 +54,29 @@ export default function Chess() {
 
             {/* board grid */}
             <div className="opacity-80 border grid grid-cols-chess-col grid-rows-chess-row">
+
+                {/* for each row */}
                 {selectBoard && selectBoard.map((board, i) => {
                     return (
-                        <>
+                        <React.Fragment key={nanoid()}>
+
+                            {/* each tile in the row */}
                             {board && board.map((piece, j) => {
-                                // { console.log(selectOffColor[i][j]) }
                                 return (
-                                    <ChessCell id={`${i}-${j}`} cell={[i, j]} selected={selected} setSelected={setSelected} piece={piece} offColor={selectOffColor[i][j] === 1} num={`${i}-${j}`} key={nanoid()} />
+                                    <ChessCell
+                                        id={`${i}-${j}`}
+                                        cell={[i, j]}
+                                        selected={selected}
+                                        setSelected={setSelected}
+                                        piece={piece}
+                                        offColor={selectOffColor[i][j] === 1}
+                                        num={`${i}-${j}`}
+                                        key={nanoid()}
+                                        onClick={handleClick} />
+
                                 )
                             })}
-                        </>
+                        </React.Fragment>
                     )
                 })}
             </div>

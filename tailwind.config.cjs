@@ -7,10 +7,10 @@ module.exports = {
   theme: {
     extend: {
       gridTemplateColumns: {
-        'chess-col': 'repeat(8, 85px)'
+        'chess-col': 'repeat(8, 60px)'
       },
       gridTemplateRows: {
-        'chess-row': 'repeat(8, 85px)'
+        'chess-row': 'repeat(8, 60px)'
       }
     },
   },

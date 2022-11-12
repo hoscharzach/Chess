@@ -16,7 +16,7 @@ export default function ChatContainer() {
         if (!chatInput.current) return
         if (chatInput.current.value === "") return
 
-        console.log(chatInput.current.value)
+        // console.log(chatInput.current.value)
         // await fetch("/api/sendMessage", {
         //     method: "POST",
         //     headers: { "Content-Type": "application/json" },

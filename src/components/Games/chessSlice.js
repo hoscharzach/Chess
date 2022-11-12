@@ -7,7 +7,7 @@ const initialState = {
         ["bpy", "bpy", "bpy", "bpy", "bpy", "bpy", "bpy", "bpy"],
         ["0", "0", "0", "0", "0", "0", "0", "0"],
         ["0", "0", "0", "0", "0", "0", "0", "0"],
-        ["0", "0", "0", "0", "0", "0", "0", "0"],
+        ["0", "0", "0", "wb", "0", "0", "0", "0"],
         ["0", "0", "0", "0", "0", "0", "0", "0"],
         ["wpy", "wpy", "wpy", "wpy", "wpy", "wpy", "wpy", "wpy"],
         ["wr", "wk", "wb", "wq", "wK", "wb", "wk", "wr"]
@@ -26,17 +26,18 @@ export const chessSlice = createSlice({
             state.board = initialState.board
         },
         movePiece: (state, action) => {
-            const s = Number(action.payload.start)
-            const e = Number(action.payload.end)
+            // console.log(action.payload)
+            const { start, end } = action.payload
+            console.log(start, end)
 
-            const piece = state.board[s]
+            const piece = state.board[start[0]][start[1]]
             // if it's pawn, remove the y, meaning it's made its first move
             if (piece === "wpy" || piece === "bpy") {
-                state.board[e] = piece.slice(0, 2)
-                state.board[s] = "0"
+                state.board[end[0]][end[1]] = piece.slice(0, 2)
+                state.board[start[0]][start[1]] = "0"
             } else {
-                state.board[e] = piece
-                state.board[s] = "0"
+                state.board[end[0]][end[1]] = piece
+                state.board[start[0]][start[1]] = "0"
             }
         }
     }
