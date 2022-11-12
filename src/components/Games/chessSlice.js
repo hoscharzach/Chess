@@ -28,7 +28,6 @@ export const chessSlice = createSlice({
         movePiece: (state, action) => {
             // console.log(action.payload)
             const { start, end } = action.payload
-            console.log(start, end)
 
             const piece = state.board[start[0]][start[1]]
             // if it's pawn, remove the y, meaning it's made its first move

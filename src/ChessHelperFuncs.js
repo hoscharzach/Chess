@@ -19,12 +19,6 @@ export function defaultArray() {
 }
 
 export function getValidMoves(board, piece, x, y) {
-
-    // the inputs are strings from a data attribute, turn them into numbers for easy
-    // traversal of 2D array
-    // let [x, y] = [Number(startX), Number(startY)]
-
-    // get moves based on the type of piece
     switch (true) {
         case piece === "wk" || piece === "bk":
             return getKnightMoves(board, piece, x, y)
@@ -36,10 +30,34 @@ export function getValidMoves(board, piece, x, y) {
             return getDirectionalMoves(board, piece, x, y, "normal")
         case piece === "wq" || piece === "bq":
             return getDirectionalMoves(board, piece, x, y, "queen")
+        case piece === "bK" || piece === "wK":
+            return getKingMoves(board, piece, x, y)
         default:
             return []
     }
+}
 
+function getKingMoves(board, piece, x, y) {
+    const directions = [
+        [-1, 0],
+        [-1, 1],
+        [0, 1],
+        [1, 1],
+        [1, 0],
+        [1, -1],
+        [0, -1],
+        [-1, -1]
+    ]
+
+    let mvs = []
+    for (let index = 0; index < directions.length; index++) {
+        const [a, b] = directions[index];
+        if (board[x + a] && board[x + a][y + b] && board[x + a][y + b][0] !== piece[0]) {
+            mvs.push([a + x, y + b])
+        }
+    }
+
+    return mvs.map(coord => `${coord[0]}-${coord[1]}`)
 }
 
 
