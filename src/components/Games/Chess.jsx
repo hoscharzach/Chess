@@ -31,7 +31,7 @@ export default function Chess() {
                 x,
                 y
             )
-            console.log(mvs)
+            // console.log(mvs)
             mvs.forEach(mv => {
                 const el = document.querySelector(`[data-num='${mv[0]}-${mv[mv.length - 1]}']`)
                 el.dataset.move = "1"
