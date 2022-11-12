@@ -34,10 +34,12 @@ export default function ChessCell(props) {
 
     useEffect(() => {
         // every time a piece is moved, look for check?
-        console.log(currentTurn)
+        // console.log(currentTurn)
     }, [movePiece])
 
     function handleClick(e) {
+
+        // if data-move is "1", then a piece is selected and this is a valid move
         if (e.target.dataset.move === "1") {
 
             // move the piece with start and end locations
@@ -51,34 +53,31 @@ export default function ChessCell(props) {
                 dispatch(updateKingPosition({ piece, newPosition: end }))
             }
 
+            // look for check
+
+
             // swap turns
             dispatch(changeTurns())
 
+            // reset selection
             setSelected(null)
-        } else if (e.target.piece === "0") {
+            // if it isn't a valid move, then just remove selection
+        } else if (e.target.dataset.piece === "0") {
             setSelected(null)
         } else {
             // only set selected if first letter of piece matches current turn
             const x = e.target.dataset.num[0]
             const y = e.target.dataset.num[e.target.dataset.num.length - 1]
-            // get piece and its first letter
-            console.log(board[x][y][0], currentTurn, "PIECE AND CURRENT TURN")
+
+            // get piece and its first letter, check if's equal to current turn
             if (board[x][y][0] === currentTurn) {
+                // if it is, then select it and show available moves
+                // otherwise do nothing on click
                 setSelected(e.target.dataset.num)
             } else return
-            // if (board[a[0]][a[a.length - 1]][0] === currentTurn) {
-            //     setSelected(e.target.dataset.num)
-            // } else return
+
         }
-        // console.log(selected, e.target.dataset.move)
-        // if (selected && e.target.dataset.move === "1") {
-        //     console.log("Making my move!")
-        //     setSelected(null)
-        // } else if (selected && e.target.dataset.piece === "0") {
-        //     setSelected(null)
-        // } else {
-        //     setSelected(e.target.num)
-        // }
+
     }
 
     const cellStyle = props.offColor ? "border bg-blue-400 w-full h-full flex justify-center items-center" : "border bg-white w-full h-full flex justify-center text-black  items-center"

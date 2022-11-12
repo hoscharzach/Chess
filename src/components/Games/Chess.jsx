@@ -2,18 +2,22 @@ import React, { useEffect, useState } from "react"
 // import ChessGame from './ChessClass'
 import ChessCell from './ChessCell'
 import { useDispatch, useSelector } from "react-redux"
-import { movePawn, reset } from "./chessSlice"
+import { movePawn, reset, setBlackPlayer, setWhitePlayer } from "./chessSlice"
 import { getValidMoves } from "../../ChessHelperFuncs"
 import { nanoid } from "nanoid"
+import { setUser } from "../../authSlice"
 
 export default function Chess() {
     const selectBoard = useSelector(state => state.chess.board)
     const selectOffColor = useSelector(state => state.chess.offColor)
-    // console.log(selectOffColor, "SELECT OFF COLOR")
+    const whitePlayer = useSelector(state => state.chess.whitePlayer)
+    const blackPlayer = useSelector(state => state.chess.blackPlayer)
+    const sessionUser = useSelector(state => state.auth.user)
 
     const dispatch = useDispatch()
     const [selected, setSelected] = useState(null)
 
+    const buttonStyles = "block disabled:opacity-80 text-white bg-blue-700 enabled:hover:bg-blue-800 enabled:focus:ring-4 enabled:focus:outline-none enabled:focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center enabled:dark:bg-blue-600 enabled:dark:hover:bg-blue-700 enabled:dark:focus:ring-blue-800"
 
     // whenever selected changes
     useEffect(() => {
@@ -80,8 +84,11 @@ export default function Chess() {
                     )
                 })}
             </div>
-            <button onClick={() => dispatch(reset())} className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Start New Game</button>
-            <button onClick={() => dispatch(movePawn())} className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Move pawn</button>
+            <button onClick={() => dispatch(reset())} className={buttonStyles}>Start New Game</button>
+            <button disabled={blackPlayer} onClick={() => dispatch(setBlackPlayer(sessionUser))} className={buttonStyles}>Choose black</button>
+            <button disabled={whitePlayer} onClick={() => dispatch(setWhitePlayer(sessionUser))} className={buttonStyles}>Choose white</button>
+            <button onClick={() => console.log(whitePlayer, blackPlayer)} className={buttonStyles}>Print players</button>
+
         </div>
     )
 }

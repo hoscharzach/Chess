@@ -16,12 +16,20 @@ const initialState = {
     offColor: defaultArray(),
     blackKingPosition: [0, 4],
     whiteKingPosition: [7, 4],
-    currentTurn: 'w'
+    currentTurn: 'w',
+    whitePlayer: null,
+    blackPlayer: null
 }
 export const chessSlice = createSlice({
     name: 'chess',
     initialState,
     reducers: {
+        setWhitePlayer: (state, action) => {
+            state.whitePlayer = action.payload
+        },
+        setBlackPlayer: (state, action) => {
+            state.blackPlayer = action.payload
+        },
         movePawn: (state) => {
             state.board[8] = "0"
             state.board[16] = "bpy"
@@ -30,15 +38,15 @@ export const chessSlice = createSlice({
             state.board = initialState.board
         },
         updateKingPosition: (state, action) => {
-            // console.log(current(state), "STATE IN REDUCER")
-            // console.log(action.payload, "ACTION.PAYLOAD")
             const x = action.payload.newPosition[0]
             const y = action.payload.newPosition[1]
-            action.payload.piece === "wK" ? state.whiteKingPosition = [x, y] : state.blackKingPosition = [x, y]
+            action.payload.piece === "wK" ?
+                state.whiteKingPosition = [x, y]
+                : state.blackKingPosition = [x, y]
 
         },
         movePiece: (state, action) => {
-            // console.log(action.payload)
+
             const { start, end } = action.payload
 
             const piece = state.board[start[0]][start[1]]
@@ -58,6 +66,6 @@ export const chessSlice = createSlice({
 })
 
 
-export const { movePawn, reset, movePiece, updateKingPosition, changeTurns } = chessSlice.actions
+export const { movePawn, reset, movePiece, updateKingPosition, changeTurns, setWhitePlayer, setBlackPlayer } = chessSlice.actions
 
 export default chessSlice.reducer

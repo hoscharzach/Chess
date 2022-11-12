@@ -1,10 +1,29 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import GameContainer from './components/GameContainer'
 import ChatContainer from './components/ChatContainer'
+import { nanoid } from 'nanoid'
+import { useDispatch, useSelector } from 'react-redux'
+import { setUser } from './authSlice'
 
 function App() {
 
+  const dispatch = useDispatch()
+
+  // when app loads, check local storage for a uid, if t
+  useEffect(() => {
+    const id = localStorage.getItem('uid')
+    if (id) {
+      dispatch(setUser(id))
+    } else {
+      const newId = nanoid()
+      localStorage.setItem('uid', `${newId}`)
+      dispatch(setUser(newId))
+    }
+  }, [])
+
+  // default game that shows
   const [game, setGame] = useState('chess')
+
 
   return (
     <div className='flex justify-center flex-col w-full h-full items-center my-6 gap-4'>
