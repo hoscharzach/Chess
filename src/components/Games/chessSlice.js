@@ -24,6 +24,12 @@ export const chessSlice = createSlice({
     name: 'chess',
     initialState,
     reducers: {
+        updateGameState: (state, action) => {
+            state.board = action.payload.game.board
+            state.currentTurn = action.payload.game.turn
+            state.whitePlayer = action.payload.game.playerW
+            state.blackPlayer = action.payload.game.playerB
+        },
         setWhitePlayer: (state, action) => {
             state.whitePlayer = action.payload
         },
@@ -66,6 +72,6 @@ export const chessSlice = createSlice({
 })
 
 
-export const { movePawn, reset, movePiece, updateKingPosition, changeTurns, setWhitePlayer, setBlackPlayer } = chessSlice.actions
+export const { updateGameState, movePawn, reset, movePiece, updateKingPosition, changeTurns, setWhitePlayer, setBlackPlayer } = chessSlice.actions
 
 export default chessSlice.reducer

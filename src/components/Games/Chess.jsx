@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 // import ChessGame from './ChessClass'
 import ChessCell from './ChessCell'
 import { useDispatch, useSelector } from "react-redux"
-import { movePawn, reset, setBlackPlayer, setWhitePlayer } from "./chessSlice"
+import { movePawn, reset, setBlackPlayer, setWhitePlayer, updateGameState } from "./chessSlice"
 import { getValidMoves } from "../../ChessHelperFuncs"
 import { nanoid } from "nanoid"
 import { setUser } from "../../authSlice"
@@ -13,9 +13,11 @@ export default function Chess() {
     const whitePlayer = useSelector(state => state.chess.whitePlayer)
     const blackPlayer = useSelector(state => state.chess.blackPlayer)
     const sessionUser = useSelector(state => state.auth.user)
+    const currentTurn = useSelector(state => state.chess.currentTurn)
 
     const dispatch = useDispatch()
     const [selected, setSelected] = useState(null)
+    const [conn, setConn] = useState(null)
 
     const buttonStyles = "block disabled:opacity-80 text-white bg-blue-700 enabled:hover:bg-blue-800 enabled:focus:ring-4 enabled:focus:outline-none enabled:focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center enabled:dark:bg-blue-600 enabled:dark:hover:bg-blue-700 enabled:dark:focus:ring-blue-800"
 
@@ -41,16 +43,37 @@ export default function Chess() {
                 el.dataset.move = "1"
             })
         }
-        // console.log(selected.dataset)
     }, [selected])
 
     function handleClick(e) {
         setSelected(e.target)
     }
 
-    // useEffect(() => {
-    //     console.log("i'm rerendering")
-    // })
+    function handleMessages(e) {
+        const message = JSON.parse(e.data)
+
+        // if message is gamestate
+        if (message.chessGameState) {
+            // console.log(message.chessGameState)
+            // use it to update gamestate
+            dispatch(updateGameState({ game: message.chessGameState }))
+        }
+    }
+
+    function connectToWebsocket() {
+        const ws = new WebSocket('wss://golang-test.onrender.com/ws/2')
+        ws.onopen = () => {
+            console.log("connected to room 1")
+        }
+        ws.onclose = (e) => {
+            console.log(e, "closing connection")
+        }
+        ws.onmessage = handleMessages
+
+        setConn(ws)
+        return () => ws.close()
+    }
+
     return (
 
         // board container
@@ -88,6 +111,18 @@ export default function Chess() {
             <button disabled={blackPlayer} onClick={() => dispatch(setBlackPlayer(sessionUser))} className={buttonStyles}>Choose black</button>
             <button disabled={whitePlayer} onClick={() => dispatch(setWhitePlayer(sessionUser))} className={buttonStyles}>Choose white</button>
             <button onClick={() => console.log(whitePlayer, blackPlayer)} className={buttonStyles}>Print players</button>
+            <button onClick={connectToWebsocket} className={buttonStyles}>Connect to room 1</button>
+            <button onClick={() => {
+                conn.send(JSON.stringify(
+                    {
+                        chessGameState: {
+                            board: selectBoard,
+                            turn: currentTurn,
+                            playerB: blackPlayer,
+                            playerW: whitePlayer
+                        }
+                    }))
+            }} className={buttonStyles}>Send Game State</button>
 
         </div>
     )
