@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { defaultArray } from "../../ChessHelperFuncs";
-import { current } from '@reduxjs/toolkit'
 
 const initialState = {
     board: [
