@@ -61,6 +61,7 @@ export default function ChessCell(props) {
 
             // reset selection
             setSelected(null)
+
             // if it isn't a valid move, then just remove selection
         } else if (e.target.dataset.piece === "0") {
             setSelected(null)

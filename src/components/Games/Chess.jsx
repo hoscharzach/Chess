@@ -50,20 +50,20 @@ export default function Chess() {
     }
 
     function handleMessages(e) {
-        const message = JSON.parse(e.data)
+        const data = JSON.parse(e.data)
 
-        // if message is gamestate
-        if (message.chessGameState) {
-            // console.log(message.chessGameState)
-            // use it to update gamestate
-            dispatch(updateGameState({ game: message.chessGameState }))
+        // if data is gamestate, use it to update gamestate
+        if (data.chessGameState) {
+            dispatch(updateGameState({ game: data.chessGameState }))
+        } else if (data.chat) {
+
         }
     }
 
     function connectToWebsocket() {
         const ws = new WebSocket('wss://golang-test.onrender.com/ws/2')
         ws.onopen = () => {
-            console.log("connected to room 1")
+            console.log("connected to room 2")
         }
         ws.onclose = (e) => {
             console.log(e, "closing connection")

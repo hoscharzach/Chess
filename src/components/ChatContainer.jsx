@@ -36,7 +36,6 @@ export default function ChatContainer() {
             {/* Top of chat bar */}
             <div className=" flex justify-center w-full items-center border-b border-slate-500 p-4 h-16">
                 <div className="text-3xl flex">Gamer-Chat</div>
-                {/* <button className=" p-2 rounded-lg border bg-slate-900 border-gray-400  enabled:hover:border enabled:hover:border-blue-500">Leave Chat</button> */}
             </div>
 
             {/* users and chat messages */}
