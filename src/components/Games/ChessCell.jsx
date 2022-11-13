@@ -25,12 +25,14 @@ export default function ChessCell(props) {
     const dispatch = useDispatch()
     const piece = useSelector(state => state.chess.board[props.cell[0]][props.cell[1]])
     const board = useSelector(state => state.chess.board)
+    const blackPlayer = useSelector(state => state.chess.blackPlayer)
+    const whitePlayer = useSelector(state => state.chess.whitePlayer)
     const blackKingPosition = useSelector(state => state.chess.blackKingPosition)
     const whiteKingPosition = useSelector(state => state.chess.whiteKingPosition)
     const currentTurn = useSelector(state => state.chess.currentTurn)
+    const conn = useSelector(state => state.auth.conn)
     // console.log(whiteKingPosition)
     const { selected, setSelected } = props
-
 
     useEffect(() => {
         // every time a piece is moved, look for check?
@@ -46,21 +48,36 @@ export default function ChessCell(props) {
             const start = [Number(selected[0]), Number(selected[selected.length - 1])]
             const piece = board[start[0]][start[1]]
             const end = [Number(e.target.dataset.num[0]), Number(e.target.dataset.num[e.target.dataset.num.length - 1])]
-            dispatch(movePiece({ start, end }))
+            // dispatch(movePiece({ start, end }))
+            const copyBoard = JSON.parse(JSON.stringify(board))
+
+            copyBoard[end[0]][end[1]] = piece
+            console.log(copyBoard)
+            copyBoard[start[0]][start[1]] = "0"
+            conn.send(JSON.stringify(
+                {
+                    chessGameState: {
+                        board: copyBoard,
+                        turn: currentTurn === 'w' ? 'b' : 'w',
+                        playerB: blackPlayer,
+                        playerW: whitePlayer
+                    }
+                }))
 
             // if it's a king, update the position
-            if (piece === "wK" || piece === "bK") {
-                dispatch(updateKingPosition({ piece, newPosition: end }))
-            }
+            // if (piece === "wK" || piece === "bK") {
+            //     dispatch(updateKingPosition({ piece, newPosition: end }))
+            // }
 
             // look for check
 
 
             // swap turns
-            dispatch(changeTurns())
+            // dispatch(changeTurns())
 
             // reset selection
             setSelected(null)
+
 
             // if it isn't a valid move, then just remove selection
         } else if (e.target.dataset.piece === "0") {

@@ -21,12 +21,12 @@ export const authSlice = createSlice({
             state.messages.push(action.payload.message)
         },
         setConn: (state, action) => {
-            state.conn = action.payload.conn
+            state.conn = action.payload
         }
 
     }
 })
 
-export const { setUser, setUsername, setMessages, setConn } = authSlice.actions
+export const { setUser, setUsername, addMessage, setConn } = authSlice.actions
 
 export default authSlice.reducer
