@@ -6,8 +6,10 @@ import { movePawn, reset, setBlackPlayer, setWhitePlayer, updateGameState } from
 import { getValidMoves } from "../../ChessHelperFuncs"
 import { nanoid } from "nanoid"
 import { setConn, addMessage, setUser } from "../../authSlice"
+import { io } from "socket.io-client"
 
 export default function Chess(props) {
+    const chessSocket = useRef(null)
     const selectBoard = useSelector(state => state.chess.board)
     const selectOffColor = useSelector(state => state.chess.offColor)
     const whitePlayer = useSelector(state => state.chess.whitePlayer)
@@ -22,15 +24,8 @@ export default function Chess(props) {
     const [status, setStatus] = useState('Not connected')
     const [localConn, setLocalConn] = useState(null)
 
-    // let connection = useRef(null)
     const buttonStyles = "block disabled:opacity-80 text-white bg-blue-700 enabled:hover:bg-blue-800 enabled:focus:ring-4 enabled:focus:outline-none enabled:focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center enabled:dark:bg-blue-600 enabled:dark:hover:bg-blue-700 enabled:dark:focus:ring-blue-800"
 
-
-    // useEffect(() => {
-    //     if (status === 'Connected') {
-    //         dispatch(setConn(localConn))
-    //     }
-    // }, [status])
     // whenever selected changes
     useEffect(() => {
         //  remove all active move highlights every time selected is changed
@@ -71,20 +66,8 @@ export default function Chess(props) {
     }
 
     function connectToWebsocket() {
-        const ws = new WebSocket('wss://golang-test.onrender.com/ws/2')
-        setStatus('Connecting...Please wait')
-        ws.onopen = () => {
-            setStatus('Connected')
-            ws.send(JSON.stringify({ chat: `${username} has joined the chat.` }))
-
-        }
-        ws.onclose = (e) => {
-            console.log("Connection closed")
-            setStatus('Connection closed')
-        }
-        ws.onmessage = handleMessages
-
-        dispatch(setConn(ws))
+        chessSocket.current = io('http://localhost:3000')
+        console.log(chessSocket.current)
     }
     // console.log(localConn)
     return (
@@ -132,7 +115,7 @@ export default function Chess(props) {
                 <button onClick={connectToWebsocket} className={buttonStyles}>Connect to game</button>
 
                 <button onClick={() => {
-                    console.log('sent state')
+                    // console.log('sent state')
                 }} className={buttonStyles}>Send Game State</button>
             </div>
 

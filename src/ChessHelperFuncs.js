@@ -158,10 +158,13 @@ function getKnightMoves(board, piece, x, y) {
 
     let valid = []
 
+    // for each l possible knight move
     for (let i = 0; i < knightMoves.length; i++) {
         let xDiff = knightMoves[i][0] + x
         let yDiff = knightMoves[i][1] + y
 
+        // check if the tile exists on the board and if it's an enemy
+        // knight can go to occupied tile as long as it's an enemy
         if (board[xDiff]?.[yDiff] && board[xDiff]?.[yDiff][0] !== piece[0]) {
             valid.push([xDiff, yDiff])
         }
@@ -174,6 +177,7 @@ function getKnightMoves(board, piece, x, y) {
 function getDirectionalMoves(board, piece, x, y, type) {
     let directions
 
+    // bishop
     if (type === "diagonal") {
         directions = [
             [1, 1],
@@ -181,14 +185,20 @@ function getDirectionalMoves(board, piece, x, y, type) {
             [-1, 1],
             [-1, -1]
         ]
-    } else if (type === "normal") {
+    }
+
+    // rook
+    else if (type === "normal") {
         directions = [
             [1, 0],
             [0, -1],
             [0, 1],
             [-1, 0]
         ]
-    } else {
+    }
+
+    // queen
+    else {
         directions = [
             [1, 1],
             [1, -1],
@@ -204,19 +214,32 @@ function getDirectionalMoves(board, piece, x, y, type) {
     let mvs = []
 
     for (let i = 0; i < directions.length; i++) {
+
+        // start with direction
         let a = directions[i][0]
         let b = directions[i][1]
+
+        // while the tile exists on the board
         while (board[x + a] && board[x + a][y + b]) {
 
+            // if tile is empty in that direction, push the tile to valid moves array
             if (board[x + a][y + b] === "0") {
-
                 mvs.push([x + a, y + b])
+                // and go one more tile in that direction
                 a += directions[i][0]
                 b += directions[i][1]
-            } else if (board[x + a][y + b][0] !== piece[0]) {
+
+            }
+
+            // if it's an enemy piece, add it to the moves array and then
+            // break out of the loop because we have to stop going in that direction
+            else if (board[x + a][y + b][0] !== piece[0]) {
                 mvs.push([x + a, y + b])
                 break
-            } else {
+            }
+
+            // otherwise if we hit an allied piece so just break out of the loop
+            else {
                 break
             }
         }

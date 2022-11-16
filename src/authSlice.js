@@ -3,8 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     user: null,
     username: null,
-    messages: [],
-    conn: null
 }
 
 export const authSlice = createSlice({
@@ -16,14 +14,7 @@ export const authSlice = createSlice({
         },
         setUsername: (state, action) => {
             state.username = action.payload
-        },
-        addMessage: (state, action) => {
-            state.messages.push(action.payload.message)
-        },
-        setConn: (state, action) => {
-            state.conn = action.payload
         }
-
     }
 })
 

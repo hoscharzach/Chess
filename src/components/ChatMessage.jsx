@@ -1,10 +1,13 @@
+import { useSelector } from "react-redux"
+
 export default function ChatMessage(props) {
-    // const config = assertConfiguration()
-    // const mine = config.auth.clientId === props.message.author
-    let mine = true
+
+    const myId = useSelector(state => state.auth.user)
+    const mine = props.message.userId === myId
+
     let innerContent = (
         <>
-            <span className="text-sm text-blue-200">{props.message.author}</span>
+            <span className="text-sm text-blue-200">{props.message.username || 'Notification'}</span>
             <span id='test-wrap' className="text-sm w-full break-words overflow-x-auto">{props.message.message}</span>
         </>
     )
