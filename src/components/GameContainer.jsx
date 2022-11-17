@@ -4,16 +4,16 @@ import Chess from './Games/Chess'
 export default function GameContainer(props) {
 
     switch (props.game) {
-        case 'battleship':
+        case 'Battleship':
             return (
                 <div>Battleship</div>
             )
-        case 'tic-tac-toe':
+        case 'Tic-tac-toe':
             return (
                 // <div>test</div>
                 <TicTacToe />
             )
-        case 'chess':
+        case 'Chess':
             return (
                 <Chess />
             )

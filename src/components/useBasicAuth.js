@@ -8,10 +8,11 @@ export default function useBasicAuth() {
     useEffect(() => {
 
         async function getRandomWords() {
+            console.log("running get random words")
             const res = await fetch('https://random-word-api.herokuapp.com/word?number=2')
             if (res.ok) {
                 const data = await res.json()
-                return data
+                return dispatch(setUsername(`${data[0]} ${data[1]}`))
             }
         }
 
@@ -29,8 +30,8 @@ export default function useBasicAuth() {
             dispatch(setUsername(username))
         } else {
             getRandomWords()
-                .then((a) => dispatch(setUsername(`${a[0]} ${a[1]}`)))
-
         }
     }, [])
+
+
 }

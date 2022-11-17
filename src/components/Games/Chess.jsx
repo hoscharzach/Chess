@@ -16,7 +16,7 @@ export default function Chess(props) {
     const blackPlayer = useSelector(state => state.chess.blackPlayer)
     const sessionUser = useSelector(state => state.auth.user)
     const currentTurn = useSelector(state => state.chess.currentTurn)
-    const conn = useSelector(state => state.auth.conn)
+    // const conn = useSelector(state => state.auth.conn)
     const username = useSelector(state => state.auth.username)
 
     const dispatch = useDispatch()
@@ -104,20 +104,20 @@ export default function Chess(props) {
                 })}
             </div>
             <div>{status}</div>
-            <div className="flex gap-2 mb-2">
+            {/* <div className="flex gap-2 mb-2"> */}
 
-                <button onClick={() => dispatch(reset())} className={buttonStyles}>Start New Game</button>
-                {/* <button disabled={blackPlayer} onClick={() => dispatch(setBlackPlayer(sessionUser))} className={buttonStyles}>Choose black</button>
+            {/* <button onClick={() => dispatch(reset())} className={buttonStyles}>Start New Game</button> */}
+            {/* <button disabled={blackPlayer} onClick={() => dispatch(setBlackPlayer(sessionUser))} className={buttonStyles}>Choose black</button>
             <button disabled={whitePlayer} onClick={() => dispatch(setWhitePlayer(sessionUser))} className={buttonStyles}>Choose white</button>
         <button onClick={() => console.log(whitePlayer, blackPlayer)} className={buttonStyles}>Print players</button> */}
-
+            {/*
 
                 <button onClick={connectToWebsocket} className={buttonStyles}>Connect to game</button>
 
                 <button onClick={() => {
                     // console.log('sent state')
-                }} className={buttonStyles}>Send Game State</button>
-            </div>
+                }} className={buttonStyles}>Send Game State</button> */}
+            {/* </div> */}
 
         </div>
     )
