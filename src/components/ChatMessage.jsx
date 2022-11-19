@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux"
 import { useSocket } from "../context/socket_context"
 
 export default function ChatMessage(props) {

@@ -7,21 +7,24 @@ import { io } from "socket.io-client";
 const SOCKET_URL = 'http://localhost:3000'
 
 const SocketContext = createContext()
-
 const socket = io(SOCKET_URL)
 
 export default function SocketProvider(props) {
 
     const [game, setGame] = useState('')
     const [user, setUser] = useState(null)
-    const [rooms, setRooms] = useState({})
     const [currentRoom, setCurrentRoom] = useState(null)
     const [messages, setMessages] = useState([])
 
-    socket.off("chat").on("chat", (response) => {
-        console.log(response, "RESPONSE FROM SEND CHAT")
-        setMessages(prev => [...prev, response])
+
+    // when receiving a chat
+    socket.off("chat").on("chat", (data) => {
+        console.log(data)
+        // console.log(response, "RESPONSE FROM SEND CHAT")
+        setMessages(prev => [...prev, data])
     })
+
+    socket.on("joinRoom", () => console.log("successfully joined room"))
 
     // on initial render get user id and username
     useEffect(() => {
@@ -48,27 +51,9 @@ export default function SocketProvider(props) {
         setGame(type)
     }
 
-    function createRoom(roomId) {
-        socket.emit("create room", roomId, user, (response) => {
-            setCurrentRoom(response.roomId)
-            // console.log(response, "RESPONSE FROM CREATE ROOM")
-        })
-    }
-
     function joinRoom(roomId) {
-        // set this room to currentRoom
-
-        // join room - if it doesn't exist, give error because this
-        // was supposed to be a room with someone in it
-        socket.emit("join room", roomId, user, (response) => {
-            if (response.ok) {
-                console.log(response)
-                setCurrentRoom(roomId)
-            }
-            else {
-                window.alert("Something went wrong")
-            }
-        })
+        setCurrentRoom(roomId)
+        socket.emit("joinRoom", { roomId, user })
     }
 
     // useEffect(() => {
@@ -80,7 +65,6 @@ export default function SocketProvider(props) {
             socket,
             currentRoom,
             joinRoom,
-            createRoom,
             user,
             setUsername,
             game,

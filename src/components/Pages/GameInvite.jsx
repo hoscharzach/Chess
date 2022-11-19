@@ -2,7 +2,7 @@ import Header from "../Header";
 import MainPageContainer from "../MainPageContainer";
 import CreateInvite from "../CreateInvite";
 import { buttonStyles } from "../styles";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSocket } from "../../context/socket_context";
 import { nanoid } from "nanoid";
@@ -14,7 +14,7 @@ export default function GameInvite() {
 
     let navigate = useNavigate()
     const { game } = useParams()
-    const { joinRoom, createRoom } = useSocket()
+    const { joinRoom } = useSocket()
 
     const [roomCode, setRoomCode] = useState('')
     const [joinRoomDisplay, setJoinRoomDisplay] = useState(false)
@@ -24,7 +24,7 @@ export default function GameInvite() {
         setJoinRoomDisplay(false)
         const roomId = nanoid()
         setRoomCode(roomId)
-        createRoom(roomId)
+        joinRoom(roomId)
     }
 
     function handleCopyPaste(e) {
@@ -47,7 +47,7 @@ export default function GameInvite() {
         setRoomCode('')
         setJoinRoomDisplay(true)
     }
-    console.log(game, "GAME")
+
     return (
         <MainPageContainer>
             <Header />

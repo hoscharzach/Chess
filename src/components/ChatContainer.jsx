@@ -14,6 +14,8 @@ export default function ChatContainer(props) {
     // const [messages, setMessages] = useState([])
     const { messages, socket, user, currentRoom } = useSocket()
 
+    console.log(currentRoom, "CURRENT ROOM")
+
     useEffect(() => {
         scrollToBottom()
     }, [messages])
@@ -30,10 +32,7 @@ export default function ChatContainer(props) {
             message: chatInput.current.value
         }
 
-        socket.emit("send chat", message, currentRoom, (response) => {
-            console.log(response, "RESPONSE FROM SEND CHAT")
-        })
-
+        socket.emit("sendChat", ({ message, roomId: currentRoom }))
         chatInput.current.value = ""
     }
 
