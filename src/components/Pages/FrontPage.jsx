@@ -12,8 +12,6 @@ export default function FrontPage() {
     // const { game, roomId } = useParams()
     const { game, chooseGame } = useSocket()
 
-    if (game) navigate(`/${game}`)
-
     return (
         <MainPageContainer>
 
@@ -28,8 +26,14 @@ export default function FrontPage() {
 
             {/* Select game buttons */}
             <div className="flex gap-3">
-                <button className={buttonStyles} onClick={() => chooseGame('Chess')}>Chess</button>
-                <button className={buttonStyles} onClick={() => chooseGame('Tic-tac-toe')}>Tic-Tac-Toe</button>
+                <button className={buttonStyles} onClick={() => {
+                    chooseGame('Chess')
+                    navigate('/Chess')
+                }}>Chess</button>
+                <button className={buttonStyles} onClick={() => {
+                    chooseGame('Tic-tac-toe')
+                    navigate('/Tic-tac-toe')
+                }}>Tic-Tac-Toe</button>
             </div>
 
         </MainPageContainer>

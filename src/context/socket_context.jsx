@@ -26,10 +26,11 @@ export default function SocketProvider(props) {
             setUser({ id: newId, username: null })
         } else if (id && !username) {
             setUser({ id, username: null })
+        } else if (!id && username) {
+            setUser({ id: newId, username })
         } else {
             setUser({ id, username })
         }
-        console.log("use effect auth running")
     }, [])
 
     function setUsername(newUsername) {
@@ -37,22 +38,28 @@ export default function SocketProvider(props) {
     }
 
     function chooseGame(type) {
-        console.log(type, "hitting function in context")
         setGame(type)
-        // console.log(location)
     }
 
-    function createRoom() {
-        socket.emit("create room", user, response => {
-            console.log(response.roomId, "RESPONSE.ROOMID")
-            setCurrentRoom(response.roomId)
+    function createRoom(roomId) {
+        socket.emit("create room", roomId, user, (response) => {
+            console.log(response, "RESPONSE FROM CREATE ROOM")
         })
     }
 
     function joinRoom(roomId) {
+        // set this room to currentRoom
+
+        // join room - if it doesn't exist, give error because this
+        // was supposed to be a room with someone in it
         socket.emit("join room", roomId, user, (response) => {
-            console.log('response in join room function')
-            setCurrentRoom(response.roomId)
+            if (response.ok) {
+                console.log(response.message)
+                return setCurrentRoom(roomId)
+
+            } else {
+                return response.message
+            }
         })
     }
 
@@ -63,11 +70,9 @@ export default function SocketProvider(props) {
     return (
         <SocketContext.Provider value={{
             socket,
-            createRoom,
             currentRoom,
             joinRoom,
-            setCurrentRoom,
-            rooms,
+            createRoom,
             user,
             setUsername,
             game,
