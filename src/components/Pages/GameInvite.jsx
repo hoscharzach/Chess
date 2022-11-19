@@ -3,16 +3,18 @@ import MainPageContainer from "../MainPageContainer";
 import CreateInvite from "../CreateInvite";
 import { buttonStyles } from "../styles";
 import { useEffect, useState } from "react";
-import { createRoutesFromChildren, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSocket } from "../../context/socket_context";
 import { nanoid } from "nanoid";
 import ContentPaste from "@mui/icons-material/ContentPaste";
+import GameContainer from "../GameContainer";
+import ChatContainer from '../ChatContainer'
 
 export default function GameInvite() {
 
     let navigate = useNavigate()
-
-    const { game, joinRoom, createRoom } = useSocket()
+    const { game } = useParams()
+    const { joinRoom, createRoom } = useSocket()
 
     const [roomCode, setRoomCode] = useState('')
     const [joinRoomDisplay, setJoinRoomDisplay] = useState(false)
@@ -39,13 +41,13 @@ export default function GameInvite() {
     function onJoinRoomSubmit(e) {
         e.preventDefault()
         joinRoom(inputRoomCode)
-        console.log(`joining room ${inputRoomCode}`)
     }
 
     function onClickJoinbyRoom() {
         setRoomCode('')
         setJoinRoomDisplay(true)
     }
+    console.log(game, "GAME")
     return (
         <MainPageContainer>
             <Header />
@@ -112,6 +114,11 @@ export default function GameInvite() {
                         <button type="submit" className={buttonStyles}>Join Room</button>
                     </form>
                 }
+            </div>
+            <div className="flex">
+
+                <GameContainer game={game} />
+                <ChatContainer />
             </div>
         </MainPageContainer>
     )

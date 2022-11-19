@@ -7,24 +7,21 @@ import { getValidMoves } from "../../ChessHelperFuncs"
 import { nanoid } from "nanoid"
 import { setConn, addMessage, setUser } from "../../authSlice"
 import { io } from "socket.io-client"
+import { useSocket } from "../../context/socket_context"
 
 export default function Chess(props) {
-    const chessSocket = useRef(null)
+
     const selectBoard = useSelector(state => state.chess.board)
     const selectOffColor = useSelector(state => state.chess.offColor)
     const whitePlayer = useSelector(state => state.chess.whitePlayer)
     const blackPlayer = useSelector(state => state.chess.blackPlayer)
-    const sessionUser = useSelector(state => state.auth.user)
     const currentTurn = useSelector(state => state.chess.currentTurn)
-    // const conn = useSelector(state => state.auth.conn)
-    const username = useSelector(state => state.auth.username)
+
+    const { currentRoom } = useSocket()
 
     const dispatch = useDispatch()
     const [selected, setSelected] = useState(null)
-    const [status, setStatus] = useState('Not connected')
-    const [localConn, setLocalConn] = useState(null)
 
-    const buttonStyles = "block disabled:opacity-80 text-white bg-blue-700 enabled:hover:bg-blue-800 enabled:focus:ring-4 enabled:focus:outline-none enabled:focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center enabled:dark:bg-blue-600 enabled:dark:hover:bg-blue-700 enabled:dark:focus:ring-blue-800"
 
     // whenever selected changes
     useEffect(() => {
@@ -103,21 +100,7 @@ export default function Chess(props) {
                     )
                 })}
             </div>
-            <div>{status}</div>
-            {/* <div className="flex gap-2 mb-2"> */}
-
-            {/* <button onClick={() => dispatch(reset())} className={buttonStyles}>Start New Game</button> */}
-            {/* <button disabled={blackPlayer} onClick={() => dispatch(setBlackPlayer(sessionUser))} className={buttonStyles}>Choose black</button>
-            <button disabled={whitePlayer} onClick={() => dispatch(setWhitePlayer(sessionUser))} className={buttonStyles}>Choose white</button>
-        <button onClick={() => console.log(whitePlayer, blackPlayer)} className={buttonStyles}>Print players</button> */}
-            {/*
-
-                <button onClick={connectToWebsocket} className={buttonStyles}>Connect to game</button>
-
-                <button onClick={() => {
-                    // console.log('sent state')
-                }} className={buttonStyles}>Send Game State</button> */}
-            {/* </div> */}
+            <div>{currentRoom && <span>Connected to {currentRoom}</span>}</div>
 
         </div>
     )

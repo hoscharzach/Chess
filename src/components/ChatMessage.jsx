@@ -1,17 +1,18 @@
 import { useSelector } from "react-redux"
+import { useSocket } from "../context/socket_context"
 
 export default function ChatMessage(props) {
 
-    const myId = useSelector(state => state.auth.user)
-    const mine = props.message.userId === myId
+    const { user } = useSocket()
+    const mine = props.message.userId === user.id
 
     let innerContent = (
         <>
-            <span className="text-sm text-blue-200">{props.message.username || 'Notification'}</span>
+            <span className="text-sm text-blue-200">{props.message.username}</span>
             <span id='test-wrap' className="text-sm w-full break-words overflow-x-auto">{props.message.message}</span>
         </>
     )
-
+    console.log(props.message)
     switch (mine) {
         // if post is mine, align message to right and make color lighter
         case true:

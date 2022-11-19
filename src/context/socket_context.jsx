@@ -9,12 +9,19 @@ const SOCKET_URL = 'http://localhost:3000'
 const SocketContext = createContext()
 
 const socket = io(SOCKET_URL)
+
 export default function SocketProvider(props) {
 
     const [game, setGame] = useState('')
     const [user, setUser] = useState(null)
     const [rooms, setRooms] = useState({})
     const [currentRoom, setCurrentRoom] = useState(null)
+    const [messages, setMessages] = useState([])
+
+    socket.off("chat").on("chat", (response) => {
+        console.log(response, "RESPONSE FROM SEND CHAT")
+        setMessages(prev => [...prev, response])
+    })
 
     // on initial render get user id and username
     useEffect(() => {
@@ -43,7 +50,8 @@ export default function SocketProvider(props) {
 
     function createRoom(roomId) {
         socket.emit("create room", roomId, user, (response) => {
-            console.log(response, "RESPONSE FROM CREATE ROOM")
+            setCurrentRoom(response.roomId)
+            // console.log(response, "RESPONSE FROM CREATE ROOM")
         })
     }
 
@@ -54,11 +62,11 @@ export default function SocketProvider(props) {
         // was supposed to be a room with someone in it
         socket.emit("join room", roomId, user, (response) => {
             if (response.ok) {
-                console.log(response.message)
-                return setCurrentRoom(roomId)
-
-            } else {
-                return response.message
+                console.log(response)
+                setCurrentRoom(roomId)
+            }
+            else {
+                window.alert("Something went wrong")
             }
         })
     }
@@ -76,7 +84,8 @@ export default function SocketProvider(props) {
             user,
             setUsername,
             game,
-            chooseGame
+            chooseGame,
+            messages
         }}
         >
             {props.children}
