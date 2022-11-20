@@ -11,7 +11,14 @@ export default function Chess(props) {
     const selectOffColor = useSelector(state => state.chess.offColor)
     // const [color, setColor] = useState(null)
 
-    const { currentTurn, currentRoom, socket, color } = useSocket()
+    const {
+        currentTurn,
+        currentRoom,
+        offColor,
+        socket,
+        color,
+        board
+    } = useSocket()
 
     const dispatch = useDispatch()
     const [selected, setSelected] = useState(null)
@@ -29,8 +36,8 @@ export default function Chess(props) {
             const x = Number(selected[0])
             const y = Number(selected[selected.length - 1])
             const mvs = getValidMoves(
-                selectBoard,
-                selectBoard[x][y],
+                board,
+                board[x][y],
                 x,
                 y
             )
@@ -54,7 +61,7 @@ export default function Chess(props) {
             <div className="opacity-80 border grid grid-cols-chess-col grid-rows-chess-row">
 
                 {/* for each row */}
-                {selectBoard && selectBoard.map((board, i) => {
+                {board && board.map((board, i) => {
                     return (
                         <React.Fragment key={nanoid()}>
 
@@ -80,7 +87,7 @@ export default function Chess(props) {
             </div>
             <div>
                 {currentRoom && <span>Connected</span>}
-                {color && <span> - You are playing {color}</span>}
+                {color && <span> - You are playing {color === "w" ? 'white' : 'black'}.</span>}
             </div>
 
         </div>

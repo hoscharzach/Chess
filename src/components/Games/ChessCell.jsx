@@ -10,11 +10,7 @@
 // import wr from '../../assets/wr.svg'
 // import wq from '../../assets/wq.svg'
 // import wp from '../../assets/wp.svg'
-import { getValidMoves } from '../../ChessHelperFuncs'
-import blank from '../../assets/blank.svg'
-import { useDispatch, useSelector } from 'react-redux'
-import { useState, useEffect } from 'react'
-import { changeTurns, movePiece, updateKingPosition } from './chessSlice'
+
 import { useSocket } from '../../context/socket_context'
 
 
@@ -23,37 +19,29 @@ import { useSocket } from '../../context/socket_context'
 
 export default function ChessCell(props) {
 
-    const piece = useSelector(state => state.chess.board[props.cell[0]][props.cell[1]])
-    const board = useSelector(state => state.chess.board)
+    // const piece = useSelector(state => state.chess.board[props.cell[0]][props.cell[1]])
+    // const board = useSelector(state => state.chess.board)
     const { selected, setSelected } = props
 
-    const { currentTurn, color } = useSocket()
+    const { currentTurn, color, movePiece, board } = useSocket()
 
     function handleClick(e) {
+
+        // if user's color does not match the turn do nothing on click
         if (currentTurn !== color) return
+
         // if data-move is "1", then a piece is selected and this is a valid move
         if (e.target.dataset.move === "1") {
 
-            // move the piece with start and end locations
+            // get piece's start and end locations
             const start = [Number(selected[0]), Number(selected[selected.length - 1])]
             const piece = board[start[0]][start[1]]
             const end = [Number(e.target.dataset.num[0]), Number(e.target.dataset.num[e.target.dataset.num.length - 1])]
-            // dispatch(movePiece({ start, end }))
-            const copyBoard = JSON.parse(JSON.stringify(board))
 
-            copyBoard[end[0]][end[1]] = piece
-                (copyBoard)
-            copyBoard[start[0]][start[1]] = "0"
-            conn.send(JSON.stringify(
-                {
-                    chessGameState: {
-                        board: copyBoard,
-                        turn: currentTurn === 'w' ? 'b' : 'w',
-                        playerB: blackPlayer,
-                        playerW: whitePlayer
-                    }
-                }))
-
+            // broadcast the move to websocket
+            // function movePiece(piece, start, end, turn)
+            movePiece(piece, start, end, currentTurn)
+            // remove selected
             setSelected(null)
 
 
@@ -79,13 +67,13 @@ export default function ChessCell(props) {
     const cellStyle = props.offColor ? "border bg-blue-400 w-full h-full flex justify-center items-center" : "border bg-white w-full h-full flex justify-center text-black  items-center"
     return (
         <>
-            {piece &&
+            {board &&
                 <div
                     data-move="0"
                     data-num={`${props.num}`}
                     className={cellStyle}
                     data-selected={props.num === selected ? "1" : "0"}
-                    data-piece={piece}
+                    data-piece={props.piece}
                     onClick={handleClick} />
             }
         </>
