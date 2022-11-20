@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 // import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
 
-const SOCKET_URL = 'http://localhost:3000'
+const SOCKET_URL = 'https://games-chat-express-backend.onrender.com/'
 
 const SocketContext = createContext()
 const socket = io(SOCKET_URL)
