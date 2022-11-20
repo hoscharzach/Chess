@@ -68,7 +68,7 @@ function isCheck(board, piece, x, y) {
     // same applies for all other types
 
     // check for all types of moves originating from the king instead
-    console.log(mvs)
+    // console.log(mvs)
     // return mvs.map(mv => `The ${piece[0] === "b" ? 'black' : 'white'} is in check from mv`)
     // array of moves is more than 0, king is in check?
 }

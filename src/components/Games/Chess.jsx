@@ -1,27 +1,22 @@
-import React, { useEffect, useMemo, useRef, useState } from "react"
-// import ChessGame from './ChessClass'
+import React, { useEffect, useState } from "react"
 import ChessCell from './ChessCell'
 import { useDispatch, useSelector } from "react-redux"
-import { movePawn, reset, setBlackPlayer, setWhitePlayer, updateGameState } from "./chessSlice"
 import { getValidMoves } from "../../ChessHelperFuncs"
 import { nanoid } from "nanoid"
-import { setConn, addMessage, setUser } from "../../authSlice"
-import { io } from "socket.io-client"
 import { useSocket } from "../../context/socket_context"
 
 export default function Chess(props) {
 
     const selectBoard = useSelector(state => state.chess.board)
     const selectOffColor = useSelector(state => state.chess.offColor)
-    const whitePlayer = useSelector(state => state.chess.whitePlayer)
-    const blackPlayer = useSelector(state => state.chess.blackPlayer)
-    const currentTurn = useSelector(state => state.chess.currentTurn)
+    // const [color, setColor] = useState(null)
 
-    const { currentRoom } = useSocket()
+    const { currentTurn, currentRoom, socket, color } = useSocket()
 
     const dispatch = useDispatch()
     const [selected, setSelected] = useState(null)
 
+    // assign white to first player that joins and black to second
 
     // whenever selected changes
     useEffect(() => {
@@ -51,27 +46,10 @@ export default function Chess(props) {
         setSelected(e.target)
     }
 
-    function handleMessages(e) {
-        const data = JSON.parse(e.data)
-
-        // if data is gamestate, use it to update gamestate
-        if (data.chessGameState) {
-            dispatch(updateGameState({ game: data.chessGameState }))
-        } else if (data.chat) {
-            dispatch(addMessage(data.chat))
-        }
-    }
-
-    function connectToWebsocket() {
-        chessSocket.current = io('http://localhost:3000')
-        console.log(chessSocket.current)
-    }
-    // console.log(localConn)
     return (
 
         // board container
         <div id="test" className="flex flex-col items-center justify-center gap-3">
-
             {/* board grid */}
             <div className="opacity-80 border grid grid-cols-chess-col grid-rows-chess-row">
 
@@ -100,7 +78,10 @@ export default function Chess(props) {
                     )
                 })}
             </div>
-            <div>{currentRoom && <span>Connected to {currentRoom}</span>}</div>
+            <div>
+                {currentRoom && <span>Connected</span>}
+                {color && <span> - You are playing {color}</span>}
+            </div>
 
         </div>
     )

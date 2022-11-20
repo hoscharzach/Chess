@@ -4,27 +4,36 @@ import { useLocation } from "react-router-dom";
 // import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
 
-const SOCKET_URL = 'https://games-chat-express-backend.onrender.com/'
+const SOCKET_URL = 'http://localhost:3000'
 
 const SocketContext = createContext()
-const socket = io(SOCKET_URL)
 
 export default function SocketProvider(props) {
 
+    const socket = io(SOCKET_URL)
     const [game, setGame] = useState('')
     const [user, setUser] = useState(null)
     const [currentRoom, setCurrentRoom] = useState(null)
     const [messages, setMessages] = useState([])
+    const [color, setColor] = useState(null)
+    const [currentTurn, setCurrentTurn] = useState('white')
 
+    console.log(color)
+    // determining player order
+    socket.on("chessOrder", data => {
+        if (data.user.id === user.id) {
+            setColor(data.color)
+        }
+    })
+
+    socket.on("chessUpdate", data => {
+
+    })
 
     // when receiving a chat
     socket.off("chat").on("chat", (data) => {
-        console.log(data)
-        // console.log(response, "RESPONSE FROM SEND CHAT")
         setMessages(prev => [...prev, data])
     })
-
-    socket.on("joinRoom", () => console.log("successfully joined room"))
 
     // on initial render get user id and username
     useEffect(() => {
@@ -56,10 +65,6 @@ export default function SocketProvider(props) {
         socket.emit("joinRoom", { roomId, user })
     }
 
-    // useEffect(() => {
-    //     return () => socket.emit('leave room', currentRoom, user)
-    // }, [])
-
     return (
         <SocketContext.Provider value={{
             socket,
@@ -69,7 +74,9 @@ export default function SocketProvider(props) {
             setUsername,
             game,
             chooseGame,
-            messages
+            messages,
+            color,
+            currentTurn
         }}
         >
             {props.children}

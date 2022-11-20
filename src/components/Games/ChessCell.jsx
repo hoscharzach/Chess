@@ -15,6 +15,7 @@ import blank from '../../assets/blank.svg'
 import { useDispatch, useSelector } from 'react-redux'
 import { useState, useEffect } from 'react'
 import { changeTurns, movePiece, updateKingPosition } from './chessSlice'
+import { useSocket } from '../../context/socket_context'
 
 
 // map images to object for dynamic access based on data-piece attribute
@@ -22,25 +23,14 @@ import { changeTurns, movePiece, updateKingPosition } from './chessSlice'
 
 export default function ChessCell(props) {
 
-    const dispatch = useDispatch()
     const piece = useSelector(state => state.chess.board[props.cell[0]][props.cell[1]])
     const board = useSelector(state => state.chess.board)
-    const blackPlayer = useSelector(state => state.chess.blackPlayer)
-    const whitePlayer = useSelector(state => state.chess.whitePlayer)
-    const blackKingPosition = useSelector(state => state.chess.blackKingPosition)
-    const whiteKingPosition = useSelector(state => state.chess.whiteKingPosition)
-    const currentTurn = useSelector(state => state.chess.currentTurn)
-    const conn = useSelector(state => state.auth.conn)
-    // console.log(whiteKingPosition)
     const { selected, setSelected } = props
 
-    useEffect(() => {
-        // every time a piece is moved, look for check?
-        // console.log(currentTurn)
-    }, [movePiece])
+    const { currentTurn, color } = useSocket()
 
     function handleClick(e) {
-
+        if (currentTurn !== color) return
         // if data-move is "1", then a piece is selected and this is a valid move
         if (e.target.dataset.move === "1") {
 
@@ -52,7 +42,7 @@ export default function ChessCell(props) {
             const copyBoard = JSON.parse(JSON.stringify(board))
 
             copyBoard[end[0]][end[1]] = piece
-            console.log(copyBoard)
+                (copyBoard)
             copyBoard[start[0]][start[1]] = "0"
             conn.send(JSON.stringify(
                 {
@@ -64,18 +54,6 @@ export default function ChessCell(props) {
                     }
                 }))
 
-            // if it's a king, update the position
-            // if (piece === "wK" || piece === "bK") {
-            //     dispatch(updateKingPosition({ piece, newPosition: end }))
-            // }
-
-            // look for check
-
-
-            // swap turns
-            // dispatch(changeTurns())
-
-            // reset selection
             setSelected(null)
 
 

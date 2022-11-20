@@ -14,7 +14,7 @@ export default function ChatContainer(props) {
     // const [messages, setMessages] = useState([])
     const { messages, socket, user, currentRoom } = useSocket()
 
-    console.log(currentRoom, "CURRENT ROOM")
+    // console.log(currentRoom, "CURRENT ROOM")
 
     useEffect(() => {
         scrollToBottom()
@@ -42,7 +42,7 @@ export default function ChatContainer(props) {
             children[children.length - 1].scrollIntoView()
         }
     }
-    console.log(messages)
+    // console.log(messages)
     return (
         <div hidden={props.hidden} className="h-[500px] w-[600px] border border-slate-500 rounded-lg ml-4 flex flex-col">
 

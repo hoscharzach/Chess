@@ -30,7 +30,7 @@ export default function TicTacToe(props) {
     //     let connection = new WebSocket('wss://golang-test.onrender.com/ws/2')
 
     //     connection.onclose = (e) => {
-    //         console.log("closing")
+    //         ("closing")
     //     }
 
     //     connection.onmessage = (e) => {
