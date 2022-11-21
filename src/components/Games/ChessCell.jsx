@@ -19,14 +19,13 @@ import { useSocket } from '../../context/socket_context'
 
 export default function ChessCell(props) {
 
-    // const piece = useSelector(state => state.chess.board[props.cell[0]][props.cell[1]])
-    // const board = useSelector(state => state.chess.board)
     const { selected, setSelected } = props
 
-    const { currentTurn, color, movePiece, board } = useSocket()
+    const { currentTurn, color, movePiece, board, gameStart } = useSocket()
 
     function handleClick(e) {
 
+        if (!gameStart) return
         // if user's color does not match the turn do nothing on click
         if (currentTurn !== color) return
 

@@ -7,7 +7,6 @@ import { useSocket } from "../../context/socket_context"
 
 export default function Chess(props) {
 
-    const selectBoard = useSelector(state => state.chess.board)
     const selectOffColor = useSelector(state => state.chess.offColor)
     // const [color, setColor] = useState(null)
 
@@ -85,9 +84,9 @@ export default function Chess(props) {
                     )
                 })}
             </div>
-            <div>
-                {currentRoom && <span>Connected</span>}
-                {color && <span> - You are playing {color === "w" ? 'white' : 'black'}.</span>}
+            <div className="flex flex-col items-center">
+                {currentRoom && <div>Connected</div>}
+                {color && <span>Currently {currentTurn === 'w' ? "white's" : "black's"} turn. ({color === currentTurn ? "You" : "Opponent"})</span>}
             </div>
 
         </div>

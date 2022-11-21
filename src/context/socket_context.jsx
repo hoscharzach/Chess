@@ -1,14 +1,14 @@
 import { nanoid } from "nanoid";
 import { createContext, useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-// import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
 import { defaultArray } from "../ChessHelperFuncs";
 
-const SOCKET_URL = 'https://games-chat-express-backend.onrender.com/'
+const SOCKET_URL = process.env.NODE_ENV === 'production' ?
+    'https://games-chat-express-backend.onrender.com' :
+    'http://localhost:3000'
 
 const SocketContext = createContext()
-
+// console.log(SOCKET_URL)
 export default function SocketProvider(props) {
 
     const socket = io(SOCKET_URL)
@@ -31,12 +31,14 @@ export default function SocketProvider(props) {
     const [messages, setMessages] = useState([])
     const [color, setColor] = useState(null)
     const [currentTurn, setCurrentTurn] = useState('w')
+    const [gameStart, setGameStart] = useState(false)
 
     // determining player order
     socket.on("chessOrder", data => {
         if (data.user.id === user.id) {
             setColor(data.color)
         }
+        setGameStart(data.gameStart)
     })
 
     socket.on("chessUpdate", data => {
@@ -114,7 +116,8 @@ export default function SocketProvider(props) {
             currentTurn,
             movePiece,
             offColor,
-            board
+            board,
+            gameStart
         }}
         >
             {props.children}
