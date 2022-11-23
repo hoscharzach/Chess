@@ -34,6 +34,10 @@ export default function FrontPage() {
                     chooseGame('Tic-tac-toe')
                     navigate('/Tic-tac-toe')
                 }}>Tic-Tac-Toe</button>
+                <button className={buttonStyles} onClick={() => {
+                    chooseGame('Wordle')
+                    navigate('/Wordle')
+                }}>Wordle</button>
             </div>
 
         </MainPageContainer>
