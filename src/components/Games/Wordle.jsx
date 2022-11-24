@@ -21,9 +21,9 @@ export default function Wordle() {
     }, [])
 
     console.log(rows)
-    return <div className="flex flex-col w-[500px] h-[500px]">
-        {rows && rows.map(row => (
-            <WordleRow row={row} />
+    return <div className="grid grid-cols-5 gap-2 w-[500px] h-[500px]">
+        {rows && rows.map((row, i) => (
+            <WordleRow key={i} row={row} />
         ))}
     </div>
 }
