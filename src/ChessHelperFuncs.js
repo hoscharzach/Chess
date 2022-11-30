@@ -65,6 +65,7 @@ function isCheck(board, piece, x, y) {
     // if king can move for ward with valid pawn move attack
     // that means king can die to pawn
     mvs.concat(getPawnMoves(board, piece, x, y))
+    mvs.concat(getDiagonalMoves(board, "queen", x, y))
     // same applies for all other types
 
     // check for all types of moves originating from the king instead
